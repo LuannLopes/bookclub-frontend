@@ -8,7 +8,8 @@ module.exports = {
     'react/react-in-jsx-scope': 'off',
     'react/prop-types': 'off',
     'react/no-unescaped-entities': 'off',
-    'multiline-ternary': 'off'
+    'multiline-ternary': 'off',
+    'space-before-function-paren': 'off'
   },
   settings: { 'import/resolver': { node: { paths: ['src'] } } }
 }
