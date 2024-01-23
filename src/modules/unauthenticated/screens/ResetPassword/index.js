@@ -1,9 +1,9 @@
 import { Flex, Image } from '@chakra-ui/react'
-import { Button, Input, Link, Text } from 'components'
-import { useNavigate } from 'react-router-dom'
+import { Button, Input, Text, Link } from 'components'
+// import { useNavigate } from 'react-router-dom'
 
-export const LoginScreen = () => {
-  const navigate = useNavigate()
+export const ResetPasswordScreen = () => {
+  // const navigate = useNavigate()
   return (
     <Flex flexDir="row" w="100vw" h="100vh">
       <Flex
@@ -16,19 +16,18 @@ export const LoginScreen = () => {
       >
         <Flex flexDir="column" w={['100%', '100%', '100%', '416px']} gap="22px">
           <Image src="/img/logo.svg" alt="BookClub Logo" w="160px" h="48px" />
-          <Text.ScreenTitle mt="48px">Login</Text.ScreenTitle>
-          <Input placeholder="email@exemplo.com" />
-          <Input.Password placeholder="*******************" />
-          <Flex w="100%" alignItems="flex-end" justifyContent="flex-end">
-            <Link onClick={() => navigate('/forgot-password')}>
-              Esqueceu sua senha ?
-            </Link>
-          </Flex>
-          <Button>Login</Button>
+          <Text.ScreenTitle mt="14px">Nova senha</Text.ScreenTitle>
+          <Text>
+            Digite o código enviado e uma nova senha nos campos abaixo:
+          </Text>
+          <Input placeholder="Ex: 0000" />
+          <Input.Password placeholder="Nova senha" />
+          <Input.Password placeholder="Confirmar nova senha" />
+          <Button>Salvar</Button>
           <Link.Action
-            onClick={() => navigate('/signup')}
-            text="Não possui uma conta? "
-            actionText="Cadastre-se aqui"
+            mt="14px"
+            text="Não recebeu o código?"
+            actionText="Clique aqui para reenviar."
           />
         </Flex>
       </Flex>
