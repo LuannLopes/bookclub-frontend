@@ -1,9 +1,35 @@
 import { Flex, Image } from '@chakra-ui/react'
 import { Button, Input, Link, Text } from 'components'
 import { useNavigate } from 'react-router-dom'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
 export const LoginScreen = () => {
   const navigate = useNavigate()
+
+  const { handleSubmit, values, handleChange, errors } = useFormik({
+    initialValues: {
+      email: '',
+      password: ''
+    },
+    validationSchema: Yup.object({
+      email: Yup.string()
+        .email('E-mail inválido')
+        .required('E-mail obrigatório'),
+      password: Yup.string()
+        .min(
+          6,
+          'A senha que você escolher deve conter no mínimo 6 caracteres. Isso ajuda a aumentar a segurança da sua conta.'
+        )
+        .required('Senha obrigatória')
+    }),
+    onSubmit: (data) => {
+      console.log({ data })
+    }
+  })
+
+  console.log({ values, errors })
+
   return (
     <Flex flexDir="row" w="100vw" h="100vh">
       <Flex
@@ -14,17 +40,31 @@ export const LoginScreen = () => {
         w={['100%', '100%', '100%', '40%']}
         h="100%"
       >
-        <Flex flexDir="column" w={['100%', '100%', '100%', '416px']} gap="22px">
+        <Flex flexDir="column" w={['100%', '100%', '100%', '416px']} gap="20px">
           <Image src="/img/logo.svg" alt="BookClub Logo" w="160px" h="48px" />
           <Text.ScreenTitle mt="48px">Login</Text.ScreenTitle>
-          <Input placeholder="email@exemplo.com" />
-          <Input.Password placeholder="*******************" />
+          <Input
+            id="email"
+            name="email"
+            value={values.email}
+            placeholder="email@exemplo.com"
+            onChange={handleChange}
+            error={errors.email}
+          />
+          <Input.Password
+            id="password"
+            name="password"
+            value={values.password}
+            placeholder="*******************"
+            onChange={handleChange}
+            error={errors.password}
+          />
           <Flex w="100%" alignItems="flex-end" justifyContent="flex-end">
             <Link onClick={() => navigate('/forgot-password')}>
               Esqueceu sua senha ?
             </Link>
           </Flex>
-          <Button>Login</Button>
+          <Button onClick={handleSubmit}>Login</Button>
           <Link.Action
             onClick={() => navigate('/signup')}
             text="Não possui uma conta? "
