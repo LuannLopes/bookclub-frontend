@@ -1,21 +1,48 @@
-import { Flex, Image } from '@chakra-ui/react'
+import { Flex, Image, useToast } from '@chakra-ui/react'
 import { Button, Input, Text, Link } from 'components'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import { useMutation } from 'react-query'
+import { resetPasswordCall } from 'services/api/requests'
 
 export const ResetPasswordScreen = () => {
   const navigate = useNavigate()
+  const toast = useToast()
+  const [searchParams] = useSearchParams()
+
+  const mutation = useMutation((data) => resetPasswordCall(data), {
+    onError: (error) => {
+      toast({
+        title: 'Falha ao redefinir a senha',
+        description:
+          error.response?.data.message ||
+          'Verifique os dados e tente novamente',
+        status: 'error',
+        duration: 3000,
+        isClosable: true
+      })
+    },
+    onSuccess: (data) => {
+      toast({
+        title: 'Senha redefinida com sucesso',
+        status: 'success',
+        duration: 6000,
+        isClosable: true
+      })
+      navigate('/')
+    }
+  })
 
   const { handleSubmit, values, handleChange, errors } = useFormik({
     initialValues: {
-      code: '',
+      token: '',
       password: '',
       confirmPassword: ''
     },
     validationSchema: Yup.object({
-      code: Yup.string()
-        .length(4, 'Código deve conter 4 caracteres')
+      token: Yup.string()
+        .length(6, 'Código deve conter 6 caracteres')
         .required('Código obrigatório'),
       password: Yup.string()
         .min(
@@ -31,7 +58,11 @@ export const ResetPasswordScreen = () => {
         .required('Senha obrigatória')
     }),
     onSubmit: (data) => {
-      navigate('/login')
+      mutation.mutate({
+        email: searchParams.get('email'),
+        token: data.token,
+        password: data.password
+      })
     }
   })
 
@@ -53,13 +84,13 @@ export const ResetPasswordScreen = () => {
           </Text>
           <Input
             type="text"
-            id="code"
-            name="code"
-            value={values.code}
+            id="token"
+            name="token"
+            value={values.token}
             onChange={handleChange}
-            error={errors.code}
+            error={errors.token}
             placeholder="Código"
-            maxLength={4}
+            maxLength={6}
           />
           <Input.Password
             type="password"
@@ -78,7 +109,9 @@ export const ResetPasswordScreen = () => {
             error={errors.confirmPassword}
             placeholder="Confirmar nova senha"
           />
-          <Button onClick={handleSubmit}>Salvar</Button>
+          <Button isLoading={mutation.isLoading} onClick={handleSubmit}>
+            Salvar
+          </Button>
           <Link.Action
             mt="14px"
             text="Não recebeu o código?"

@@ -55,8 +55,6 @@ export const LoginScreen = () => {
     }
   })
 
-  console.log({ values, errors })
-
   return (
     <Flex flexDir="row" w="100vw" h="100vh">
       <Flex
