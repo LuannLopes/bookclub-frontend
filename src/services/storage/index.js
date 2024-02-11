@@ -8,7 +8,7 @@ export const saveItem = async (key, data) => {
 
 export const restoreItem = async (key) => {
   try {
-    const data = localStorage.getItem(key)
+    const data = await localStorage.getItem(key)
     return data
   } catch (error) {
     return { error }
