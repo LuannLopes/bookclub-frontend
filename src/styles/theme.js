@@ -12,7 +12,10 @@ export const theme = extendTheme({
         fontFamily: 'Inter',
         padding: 0,
         margin: 0,
-        backgroundColor: colors.background
+        backgroundColor: colors.background,
+        with: '100vw',
+        scrollX: false,
+        overflowX: 'hidden'
       }
     }
   }
