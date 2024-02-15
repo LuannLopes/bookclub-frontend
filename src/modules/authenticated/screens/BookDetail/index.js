@@ -1,16 +1,82 @@
-import { Flex } from '@chakra-ui/react'
+import { Flex, useToast } from '@chakra-ui/react'
 import { NavBar, Text, Button, CategoryList } from 'components'
-import { useQuery } from 'react-query'
-import { getBookDetail } from 'services/api/requests'
+import { useQuery, useMutation } from 'react-query'
+import {
+  getBookDetail,
+  addBookToFavorites,
+  deleteBookFromFavorites
+} from 'services/api/requests'
 import { useParams } from 'react-router-dom'
 
 export const BookDetailScreen = () => {
+  const toast = useToast()
   const { id } = useParams()
+  const { data, refetch, isLoading } = useQuery(
+    ['bookDetail', id],
+    () => getBookDetail(id),
+    {
+      enabled: !!id
+    }
+  )
 
-  const { data } = useQuery(['bookDetail', id], () => getBookDetail(id), {
-    enabled: !!id
+  const addFavoriteMutation = useMutation((data) => addBookToFavorites(data), {
+    onError: (error) => {
+      toast({
+        title: 'Erro ao adicionar livros aos favoritos!',
+        description:
+          error?.response?.data?.error || 'Por favor, tente novamente.',
+        status: 'error',
+        duration: 3000,
+        isClosable: true
+      })
+      refetch()
+    },
+    onSuccess: () => {
+      toast({
+        title: 'Livros adicionados aos favoritos com sucesso!',
+        status: 'success',
+        duration: 6000,
+        isClosable: true
+      })
+      refetch()
+    }
   })
-  console.log({ data })
+
+  const deleteFavoriteMutation = useMutation(
+    (data) => deleteBookFromFavorites(data),
+    {
+      onError: (error) => {
+        toast({
+          title: 'Erro ao remover Livros dos favoritos!',
+          description:
+            error?.response?.data?.error || 'Por favor, tente novamente.',
+          status: 'error',
+          duration: 3000,
+          isClosable: true
+        })
+        refetch()
+      },
+      onSuccess: () => {
+        toast({
+          title: 'Livros removidos dos favoritos com sucesso!',
+          status: 'success',
+          duration: 6000,
+          isClosable: true
+        })
+        refetch()
+      }
+    }
+  )
+
+  const handleButtonClick = () => {
+    if (data?.data?.favorite) {
+      deleteFavoriteMutation.mutate(data?.data?.favorite?.id)
+    } else {
+      addFavoriteMutation.mutate({
+        book_id: id
+      })
+    }
+  }
 
   return (
     <Flex flexDir="column">
@@ -59,10 +125,25 @@ export const BookDetailScreen = () => {
           </Text>
         </Flex>
         <Flex>
-          <Button>Adicionar aos favoritos</Button>
+          <Button
+            isLoading={
+              isLoading ||
+              addFavoriteMutation.isLoading ||
+              deleteFavoriteMutation.isLoading
+            }
+            secondary={data?.data?.favorite}
+            onClick={() => handleButtonClick()}
+          >
+            {data?.data?.favorite
+              ? 'Remover dos favoritos'
+              : 'Adicionar aos favoritos'}
+          </Button>
         </Flex>
       </Flex>
-      <CategoryList />
+      <CategoryList
+        title="Livros relacionados"
+        categoryId={data?.data?.book?.category?.id}
+      />
     </Flex>
   )
 }
