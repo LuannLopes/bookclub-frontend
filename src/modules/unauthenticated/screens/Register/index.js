@@ -20,7 +20,7 @@ export const RegisterScreen = () => {
         isClosable: true
       })
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast({
         title: 'Conta criada com sucesso.',
         status: 'success',
