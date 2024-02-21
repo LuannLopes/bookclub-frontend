@@ -57,10 +57,10 @@ export const ForgotPasswordScreen = () => {
         w={['100%', '100%', '100%', '40%']}
         h="100%"
       >
-        <Flex flexDir="column" w={['100%', '100%', '100%', '416px']} gap="22px">
+        <Flex flexDir="column" w={['100%', '100%', '100%', '416px']}>
           <Image src="/img/logo.svg" alt="BookClub Logo" w="160px" h="48px" />
-          <Text.ScreenTitle mt="14px">Esqueceu senha</Text.ScreenTitle>
-          <Text>
+          <Text.ScreenTitle mt="48px">Esqueceu senha</Text.ScreenTitle>
+          <Text mt="24px">
             Digite abaixo seu e-mail que enviaremos um código de recuperação de
             senha:
           </Text>
@@ -70,11 +70,16 @@ export const ForgotPasswordScreen = () => {
             name="email"
             onChange={handleChange}
             error={errors.email}
+            mt="24px"
             value={values.email}
             placeholder="E-mail"
           />
-          <Button isLoading={mutation.isLoading} onClick={handleSubmit}>
-            Avançar
+          <Button
+            isLoading={mutation.isLoading}
+            mt="24px"
+            onClick={handleSubmit}
+          >
+            Enviar
           </Button>
         </Flex>
       </Flex>

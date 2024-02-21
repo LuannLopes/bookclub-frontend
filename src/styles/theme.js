@@ -13,7 +13,7 @@ export const theme = extendTheme({
         padding: 0,
         margin: 0,
         backgroundColor: colors.background,
-        with: '100vw',
+        width: '100vw',
         scrollX: false,
         overflowX: 'hidden'
       }

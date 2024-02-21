@@ -30,7 +30,7 @@ export const UserModal = ({ onClose }) => {
   const mutation = useMutation((data) => updateUserCall(data), {
     onError: (error) => {
       toast({
-        title: 'Falha ao atualizar usuário.',
+        title: 'Falha ao atualizar',
         description:
           error?.response?.data?.error || 'Por favor, tente novamente.',
         status: 'error',
@@ -40,7 +40,7 @@ export const UserModal = ({ onClose }) => {
     },
     onSuccess: (data) => {
       toast({
-        title: 'Usuário atualizado com sucesso.',
+        title: 'Atualizado com sucesso.',
         status: 'success',
         duration: 6000,
         isClosable: true
@@ -89,7 +89,7 @@ export const UserModal = ({ onClose }) => {
     }
   })
 
-  const onChangeImage = (event) => {
+  const onChangeImage = async (event) => {
     const file = event?.target?.files[0]
     const type = file?.type
 
@@ -114,7 +114,7 @@ export const UserModal = ({ onClose }) => {
         </DrawerHeader>
 
         <DrawerBody>
-          <Flex flexDir="row" alignItems="center" justifyContent="center">
+          <Flex w="100%" alignItems="center" justifyContent="center">
             <input
               ref={inputFileRef}
               style={{ display: 'none' }}
@@ -160,13 +160,12 @@ export const UserModal = ({ onClose }) => {
             placeholder="Nome completo"
           />
           <Input
-            type="email"
             id="email"
             name="email"
             value={values.email}
             onChange={handleChange}
             error={errors.email}
-            mt="24px"
+            mt="16px"
             placeholder="E-mail"
           />
           <Button

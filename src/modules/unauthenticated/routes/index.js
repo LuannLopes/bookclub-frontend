@@ -1,7 +1,7 @@
 import {
-  ForgotPasswordScreen,
   LoginScreen,
   RegisterScreen,
+  ForgotPasswordScreen,
   ResetPasswordScreen
 } from '../screens'
 

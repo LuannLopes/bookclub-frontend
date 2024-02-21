@@ -27,7 +27,7 @@ export const RegisterScreen = () => {
         duration: 6000,
         isClosable: true
       })
-      navigate('/login')
+      navigate('/')
     }
   })
 
@@ -46,10 +46,7 @@ export const RegisterScreen = () => {
         .email('E-mail inválido')
         .required('E-mail obrigatório'),
       password: Yup.string()
-        .min(
-          6,
-          'A senha que você escolher deve conter no mínimo 6 caracteres. Isso ajuda a aumentar a segurança da sua conta.'
-        )
+        .min(6, 'A senha deve conter no mínimo 6 caracteres.')
         .required('Senha obrigatória'),
       confirmPassword: Yup.string()
         .oneOf([Yup.ref('password'), null], 'As senhas devem ser iguais')
@@ -70,7 +67,7 @@ export const RegisterScreen = () => {
         w={['100%', '100%', '100%', '40%']}
         h="100%"
       >
-        <Flex flexDir="column" w={['100%', '100%', '100%', '416px']} gap="22px">
+        <Flex flexDir="column" w={['100%', '100%', '100%', '416px']}>
           <Image src="/img/logo.svg" alt="BookClub Logo" w="160px" h="48px" />
           <Text.ScreenTitle mt="48px">Cadastro</Text.ScreenTitle>
           <Input
@@ -80,6 +77,7 @@ export const RegisterScreen = () => {
             value={values.name}
             onChange={handleChange}
             error={errors.name}
+            mt="24px"
             placeholder="Nome completo"
           />
           <Input
@@ -89,6 +87,7 @@ export const RegisterScreen = () => {
             value={values.email}
             onChange={handleChange}
             error={errors.email}
+            mt="16px"
             placeholder="E-mail"
           />
           <Input.Password
@@ -98,6 +97,7 @@ export const RegisterScreen = () => {
             value={values.password}
             onChange={handleChange}
             error={errors.password}
+            mt="16px"
             placeholder="Senha"
           />
           <Input.Password
@@ -106,13 +106,19 @@ export const RegisterScreen = () => {
             value={values.confirmPassword}
             onChange={handleChange}
             error={errors.confirmPassword}
+            mt="16px"
             placeholder="confirmar senha"
           />
-          <Button isLoading={mutation.isLoading} onClick={handleSubmit}>
+          <Button
+            mt="24px"
+            isLoading={mutation.isLoading}
+            onClick={handleSubmit}
+          >
             Cadastrar
           </Button>
           <Link.Action
             onClick={() => navigate('/')}
+            mt="48px"
             text="Já possui uma conta? "
             actionText="Faça login aqui"
           />

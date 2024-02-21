@@ -68,4 +68,4 @@ Input.Password = ({ value, onChange, id, name, ...props }) => {
   )
 }
 
-Input.Password.displayName = 'Password'
+Input.Password.displayName = 'inputPassword'

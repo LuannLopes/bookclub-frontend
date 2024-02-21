@@ -16,14 +16,14 @@ export const ResetPasswordScreen = () => {
       toast({
         title: 'Falha ao redefinir a senha',
         description:
-          error.response?.data.message ||
+          error?.response?.data?.error ||
           'Verifique os dados e tente novamente',
         status: 'error',
         duration: 3000,
         isClosable: true
       })
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       toast({
         title: 'Senha redefinida com sucesso',
         status: 'success',
@@ -45,17 +45,12 @@ export const ResetPasswordScreen = () => {
         .length(6, 'Código deve conter 6 caracteres')
         .required('Código obrigatório'),
       password: Yup.string()
-        .min(
-          6,
-          'A senha que você escolher deve conter no mínimo 6 caracteres. Isso ajuda a aumentar a segurança da sua conta.'
-        )
+        .min(6, 'A senha deve conter no mínimo 6 caracteres.')
         .required('Senha obrigatória'),
       confirmPassword: Yup.string()
-        .min(
-          6,
-          'A senha que você escolher deve conter no mínimo 6 caracteres. Isso ajuda a aumentar a segurança da sua conta.'
-        )
+        .min(6, 'A senha deve conter no mínimo 6 caracteres.')
         .required('Senha obrigatória')
+        .oneOf([Yup.ref('password'), null], 'Senhas não são iguais.')
     }),
     onSubmit: (data) => {
       mutation.mutate({
@@ -76,10 +71,10 @@ export const ResetPasswordScreen = () => {
         w={['100%', '100%', '100%', '40%']}
         h="100%"
       >
-        <Flex flexDir="column" w={['100%', '100%', '100%', '416px']} gap="22px">
+        <Flex flexDir="column" w={['100%', '100%', '100%', '416px']}>
           <Image src="/img/logo.svg" alt="BookClub Logo" w="160px" h="48px" />
-          <Text.ScreenTitle mt="14px">Nova senha</Text.ScreenTitle>
-          <Text>
+          <Text.ScreenTitle mt="48px">Nova senha</Text.ScreenTitle>
+          <Text mt="24px">
             Digite o código enviado e uma nova senha nos campos abaixo:
           </Text>
           <Input
@@ -89,6 +84,7 @@ export const ResetPasswordScreen = () => {
             value={values.token}
             onChange={handleChange}
             error={errors.token}
+            mt="24px"
             placeholder="Código"
             maxLength={6}
           />
@@ -100,6 +96,7 @@ export const ResetPasswordScreen = () => {
             onChange={handleChange}
             error={errors.password}
             placeholder="Nova senha"
+            mt="16px"
           />
           <Input.Password
             id="confirmPassword"
@@ -108,12 +105,17 @@ export const ResetPasswordScreen = () => {
             onChange={handleChange}
             error={errors.confirmPassword}
             placeholder="Confirmar nova senha"
+            mt="16px"
           />
-          <Button isLoading={mutation.isLoading} onClick={handleSubmit}>
+          <Button
+            mt="24px"
+            isLoading={mutation.isLoading}
+            onClick={handleSubmit}
+          >
             Salvar
           </Button>
           <Link.Action
-            mt="14px"
+            mt="48px"
             text="Não recebeu o código?"
             actionText="Clique aqui para reenviar."
           />

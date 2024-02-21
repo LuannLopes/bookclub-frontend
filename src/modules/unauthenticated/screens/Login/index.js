@@ -53,10 +53,7 @@ export const LoginScreen = () => {
         .email('E-mail inválido')
         .required('E-mail obrigatório'),
       password: Yup.string()
-        .min(
-          6,
-          'A senha que você escolher deve conter no mínimo 6 caracteres. Isso ajuda a aumentar a segurança da sua conta.'
-        )
+        .min(6, 'A senha deve conter no mínimo 6 caracteres.')
         .required('Senha obrigatória')
     }),
     onSubmit: (data) => {
@@ -74,7 +71,7 @@ export const LoginScreen = () => {
         w={['100%', '100%', '100%', '40%']}
         h="100%"
       >
-        <Flex flexDir="column" w={['100%', '100%', '100%', '416px']} gap="20px">
+        <Flex flexDir="column" w={['100%', '100%', '100%', '416px']}>
           <Image src="/img/logo.svg" alt="BookClub Logo" w="160px" h="48px" />
           <Text.ScreenTitle mt="48px">Login</Text.ScreenTitle>
           <Input
@@ -85,6 +82,7 @@ export const LoginScreen = () => {
             error={errors.email}
             value={values.email}
             placeholder="email@exemplo.com"
+            mt="24px"
           />
           <Input.Password
             id="password"
@@ -93,17 +91,30 @@ export const LoginScreen = () => {
             placeholder="*******************"
             onChange={handleChange}
             error={errors.password}
+            mt="16px"
           />
-          <Flex w="100%" alignItems="flex-end" justifyContent="flex-end">
+          <Flex
+            mt="8px"
+            w="100%"
+            alignItems="flex-end"
+            justifyContent="flex-end"
+          >
             <Link onClick={() => navigate('/forgot-password')}>
               Esqueceu sua senha ?
             </Link>
           </Flex>
-          <Button onClick={handleSubmit}>Login</Button>
+          <Button
+            isLoading={mutation.isLoading}
+            onClick={handleSubmit}
+            mt="24px"
+          >
+            Login
+          </Button>
           <Link.Action
             onClick={() => navigate('/signup')}
             text="Não possui uma conta? "
             actionText="Cadastre-se aqui"
+            mt="48px"
           />
         </Flex>
       </Flex>

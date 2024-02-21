@@ -1,8 +1,9 @@
 import { Flex } from '@chakra-ui/react'
-import { EmptyMessage, Loader, Text } from 'components/atoms'
 import { BookCard } from 'components/molecules'
+import { EmptyMessage, Loader, Text } from 'components/atoms'
 
 export const BookList = ({ title, data, isLoading }) => {
+  console.log(data)
   return (
     <Flex
       flexDir="column"
