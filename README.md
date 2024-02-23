@@ -23,7 +23,7 @@ The user can search for books and authors, get their info and favorite the books
 
 ## Live application:
 
-<https://bookclub-pi.vercel.app/>
+<https://bookclub-rust.vercel.app/>
 
 ## Technologies:
 
